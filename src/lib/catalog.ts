@@ -28,7 +28,7 @@ export type Novel = {
 
 export type Category = { slug: string; name: string; count: number };
 export type Author = { name: string; slug: string; playlists: string[]; novels: string[] };
-export type Collection = { id: string; title: string; novels: string[]; count: number };
+export type Collection = { id: string; title: string; novels: string[]; count: number; ytId?: string | null };
 
 type Catalog = {
   channel: { name: string; handle: string; id: string; url: string };

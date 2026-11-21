@@ -17,7 +17,7 @@ import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { LoginDialog } from "@/components/site/LoginDialog";
 import { IntroOverlay } from "@/components/site/IntroOverlay";
-import { WelcomeVoice } from "@/components/site/WelcomeVoice";
+import { libraryExtrasQuery, loadLibraryExtras } from "@/lib/library";
 import { YoutubePopup } from "@/components/site/YoutubePopup";
 import { AgentLauncher } from "@/components/site/AgentLauncher";
 import { MobileTabBar } from "@/components/site/MobileTabBar";
@@ -84,6 +84,10 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  // Owner-added novels/videos/playlists, shared with every page (and their loaders) as context.
+  beforeLoad: async ({ context }) => ({
+    libraryExtras: await loadLibraryExtras(() => context.queryClient.fetchQuery(libraryExtrasQuery())),
+  }),
   head: () => ({
     // Each content route, / included, sets its own head(). Never add og:image or
     // twitter:image here: every page without its own would inherit the root's preview image.
@@ -153,7 +157,6 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <IntroOverlay />
-      <WelcomeVoice />
       <div className="pb-tabbar flex min-h-screen flex-col lg:pb-0">
         <SiteHeader />
         <main className="flex-1">

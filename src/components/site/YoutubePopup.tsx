@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { Youtube } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { channel, totalVideos } from "@/lib/catalog";
+import { channel } from "@/lib/catalog";
+import { useLibrary } from "@/lib/library";
 import logo from "@/assets/logo.png";
 
 const KEY = "nf-yt-popup";
 
 export function YoutubePopup() {
+  const { totalVideos } = useLibrary();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {

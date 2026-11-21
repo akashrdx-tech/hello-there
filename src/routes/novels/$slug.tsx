@@ -7,23 +7,30 @@ import { Stars } from "@/components/site/Stars";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  findPdfLink, formatDuration, formatViews, getCategory, getNovel, thumb, youtubePlaylistLink, youtubeVideoLink,
+  findPdfLink, formatDuration, formatViews, thumb, youtubePlaylistLink, youtubeVideoLink,
 } from "@/lib/catalog";
+import { getLibrary, useLibrary } from "@/lib/library";
 import { addReview, bumpStat, pdfQuery, pdfUrl, ratingQuery, reviewsQuery, statsQuery } from "@/lib/community";
 import { openLogin, useReaderName } from "@/lib/reader";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/novels/$slug")({
-  loader: ({ params }) => {
-    const novel = getNovel(params.slug);
+  loader: ({ params, context }) => {
+    const novel = getLibrary(context.libraryExtras).getNovel(params.slug);
     if (!novel) throw notFound();
-    return { slug: novel.slug };
+    return {
+      slug: novel.slug,
+      name: novel.name,
+      author: novel.author,
+      eps: novel.eps.slice(0, 1),
+      count: novel.eps.length,
+    };
   },
-  head: ({ params }) => {
-    const n = getNovel(params.slug);
+  head: ({ loaderData }) => {
+    const n = loaderData;
     const title = n ? `${n.name}${n.author ? ` by ${n.author}` : ""} — Novels Forever` : "Novel — Novels Forever";
     const desc = n
-      ? `Listen to ${n.name}${n.author ? ` by ${n.author}` : ""}: ${n.eps.length} audio episode(s) on Novels Forever. Reviews, ratings and PDF.`
+      ? `Listen to ${n.name}${n.author ? ` by ${n.author}` : ""}: ${n.count} audio episode(s) on Novels Forever. Reviews, ratings and PDF.`
       : "Urdu audio novel on Novels Forever.";
     const img = n?.eps[0] ? thumb(n.eps[0].id, "hq") : undefined;
     return {
@@ -49,6 +56,7 @@ export const Route = createFileRoute("/novels/$slug")({
 
 function NovelPage() {
   const { slug } = Route.useLoaderData();
+  const { getNovel, getCategory } = useLibrary();
   const novel = getNovel(slug)!;
   const [current, setCurrent] = useState(0);
   const ep = novel.eps[current] ?? novel.eps[0];

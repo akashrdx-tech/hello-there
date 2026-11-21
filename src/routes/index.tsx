@@ -12,19 +12,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   CHANNEL_OWNER,
-  authors,
-  byRecent,
-  byViews,
-  categories,
   channel,
   coverOf,
   formatViews,
-  getNovel,
-  novelsInCategory,
   totalNovels,
   totalVideos,
-  totalViews,
 } from "@/lib/catalog";
+import { useLibrary } from "@/lib/library";
 import { latestReviewsQuery } from "@/lib/community";
 
 export const Route = createFileRoute("/")({
@@ -50,6 +44,7 @@ export const Route = createFileRoute("/")({
 const CAT_ICONS = ["💍", "🔥", "🌹", "👪", "🗡️", "😄", "🎓", "🏰", "💼", "🏫", "✨", "💔", "🕌"];
 
 function Home() {
+  const { authors, byRecent, byViews, categories, novelsInCategory, totalNovels } = useLibrary();
   const top = byViews.slice(0, 10);
   const ring = byViews.slice(0, 12);
   const latest = byRecent.slice(0, 10);
@@ -248,6 +243,7 @@ function Home() {
 }
 
 function Hero() {
+  const { byViews, totalNovels, totalVideos, totalViews } = useLibrary();
   const navigate = useNavigate();
   const [q, setQ] = useState("");
   const featured = byViews.slice(0, 3);
@@ -437,6 +433,7 @@ function FeatureCard({
 }
 
 function LatestReviews() {
+  const { getNovel } = useLibrary();
   const { data } = useQuery(latestReviewsQuery());
   if (!data || data.length === 0) return null;
   return (

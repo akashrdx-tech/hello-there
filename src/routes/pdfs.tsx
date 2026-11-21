@@ -6,7 +6,8 @@ import { toast } from "sonner";
 import { SectionHeading } from "@/components/site/NovelCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { byViews, coverOf, findPdfLink, getNovel, searchNovels } from "@/lib/catalog";
+import { coverOf, findPdfLink } from "@/lib/catalog";
+import { useLibrary } from "@/lib/library";
 import { bumpStat, pdfListQuery, pdfUrl } from "@/lib/community";
 
 export const Route = createFileRoute("/pdfs")({
@@ -24,6 +25,7 @@ export const Route = createFileRoute("/pdfs")({
 });
 
 function PdfsPage() {
+  const { byViews, getNovel, searchNovels } = useLibrary();
   const qc = useQueryClient();
   const { data: pdfs, isLoading } = useQuery(pdfListQuery());
   const [q, setQ] = useState("");

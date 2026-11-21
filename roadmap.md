@@ -26,3 +26,7 @@
 - [ ] Bring over reviews, feedback, counts and PDFs from the just-saying-hi project — waiting on the owner's data export
 - [x] Copy project from GitHub (novels-forever-pdf) into this project with its own Lovable Cloud
 - [ ] Bring over reviews, feedback, counts and PDFs from the novels-forever-pdf project — waiting on the owner's data export
+- [ ] Welcome voice starts together with the opening book animation
+- [ ] Works on Vercel (media files, PDF links, no private server key needed)
+- [ ] Add newest YouTube uploads to the library
+- [ ] Admin portal: add novels, videos (by link, with preview), playlists; YouTube "new uploads" list

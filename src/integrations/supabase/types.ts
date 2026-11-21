@@ -50,6 +50,102 @@ export type Database = {
         }
         Relationships: []
       }
+      library_novels: {
+        Row: {
+          author: string | null
+          categories: string[]
+          created_at: string
+          format: string
+          name: string
+          playlist_id: string | null
+          slug: string
+          updated_at: string
+          urdu: string | null
+        }
+        Insert: {
+          author?: string | null
+          categories?: string[]
+          created_at?: string
+          format?: string
+          name: string
+          playlist_id?: string | null
+          slug: string
+          updated_at?: string
+          urdu?: string | null
+        }
+        Update: {
+          author?: string | null
+          categories?: string[]
+          created_at?: string
+          format?: string
+          name?: string
+          playlist_id?: string | null
+          slug?: string
+          updated_at?: string
+          urdu?: string | null
+        }
+        Relationships: []
+      }
+      library_playlists: {
+        Row: {
+          created_at: string
+          id: string
+          novel_slugs: string[]
+          title: string
+          updated_at: string
+          youtube_playlist_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          novel_slugs?: string[]
+          title: string
+          updated_at?: string
+          youtube_playlist_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          novel_slugs?: string[]
+          title?: string
+          updated_at?: string
+          youtube_playlist_id?: string | null
+        }
+        Relationships: []
+      }
+      library_videos: {
+        Row: {
+          created_at: string
+          duration: number
+          episode: number | null
+          id: string
+          novel_slug: string
+          season: number | null
+          title: string
+          video_id: string
+        }
+        Insert: {
+          created_at?: string
+          duration?: number
+          episode?: number | null
+          id?: string
+          novel_slug: string
+          season?: number | null
+          title: string
+          video_id: string
+        }
+        Update: {
+          created_at?: string
+          duration?: number
+          episode?: number | null
+          id?: string
+          novel_slug?: string
+          season?: number | null
+          title?: string
+          video_id?: string
+        }
+        Relationships: []
+      }
       novel_pdfs: {
         Row: {
           file_path: string

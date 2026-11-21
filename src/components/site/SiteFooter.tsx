@@ -3,9 +3,11 @@ import { MessageCircle, Youtube } from "lucide-react";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
 import { InstallAppButton } from "./InstallAppButton";
-import { CHANNEL_OWNER, OWNER, channel, totalNovels, totalVideos, whatsappLink } from "@/lib/catalog";
+import { CHANNEL_OWNER, OWNER, channel, whatsappLink } from "@/lib/catalog";
+import { useLibrary } from "@/lib/library";
 
 export function SiteFooter() {
+  const { totalNovels, totalVideos } = useLibrary();
   return (
     <footer className="relative mt-24 border-t border-border bg-card-grad">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3">

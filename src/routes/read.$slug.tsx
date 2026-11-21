@@ -1,19 +1,19 @@
 import { ClientOnly, createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 import { Loader2 } from "lucide-react";
-import { getNovel } from "@/lib/catalog";
+import { getLibrary, useLibrary } from "@/lib/library";
 
 // pdf.js is browser-only, so the reader loads after the page is in the browser.
 const BookReader = lazy(() => import("@/components/reader/BookReader"));
 
 export const Route = createFileRoute("/read/$slug")({
-  loader: ({ params }) => {
-    const novel = getNovel(params.slug);
+  loader: ({ params, context }) => {
+    const novel = getLibrary(context.libraryExtras).getNovel(params.slug);
     if (!novel) throw notFound();
-    return { slug: novel.slug };
+    return { slug: novel.slug, name: novel.name, author: novel.author };
   },
-  head: ({ params }) => {
-    const n = getNovel(params.slug);
+  head: ({ loaderData }) => {
+    const n = loaderData;
     const title = n ? `Read ${n.name}${n.author ? ` by ${n.author}` : ""} — Novels Forever` : "Read — Novels Forever";
     const desc = n ? `Read ${n.name} as a book on Novels Forever, online or offline.` : "Read Urdu novels as a book.";
     return {
@@ -46,7 +46,7 @@ function ReaderLoading() {
 
 function ReadPage() {
   const { slug } = Route.useLoaderData();
-  const novel = getNovel(slug)!;
+  const novel = useLibrary().getNovel(slug)!;
   return (
     <div className="bg-night fixed inset-0 z-50">
       <ClientOnly fallback={<ReaderLoading />}>

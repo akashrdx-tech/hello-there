@@ -1,15 +1,15 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { NovelGrid, SectionHeading } from "@/components/site/NovelCard";
-import { getAuthor, novelsOf } from "@/lib/catalog";
+import { getLibrary, useLibrary } from "@/lib/library";
 
 export const Route = createFileRoute("/authors/$slug")({
-  loader: ({ params }) => {
-    const author = getAuthor(params.slug);
+  loader: ({ params, context }) => {
+    const author = getLibrary(context.libraryExtras).getAuthor(params.slug);
     if (!author) throw notFound();
-    return { slug: author.slug };
+    return { slug: author.slug, name: author.name, count: author.novels.length };
   },
-  head: ({ params }) => {
-    const a = getAuthor(params.slug);
+  head: ({ loaderData }) => {
+    const a = loaderData ? { name: loaderData.name, novels: { length: loaderData.count } } : undefined;
     const title = a ? `${a.name} Novels — Novels Forever` : "Writer — Novels Forever";
     const desc = a
       ? `Listen to all ${a.novels.length} Urdu audio novels by ${a.name} on Novels Forever.`
@@ -36,6 +36,7 @@ export const Route = createFileRoute("/authors/$slug")({
 
 function AuthorPage() {
   const { slug } = Route.useLoaderData();
+  const { getAuthor, novelsOf } = useLibrary();
   const author = getAuthor(slug)!;
   const list = novelsOf(author.novels).sort((a, b) => b.views - a.views);
 

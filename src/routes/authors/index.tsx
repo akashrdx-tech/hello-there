@@ -3,7 +3,7 @@ import { Search } from "lucide-react";
 import { useState } from "react";
 import { SectionHeading } from "@/components/site/NovelCard";
 import { Input } from "@/components/ui/input";
-import { authors } from "@/lib/catalog";
+import { useLibrary } from "@/lib/library";
 
 export const Route = createFileRoute("/authors/")({
   head: () => ({
@@ -19,9 +19,9 @@ export const Route = createFileRoute("/authors/")({
   component: AuthorsPage,
 });
 
-const sorted = [...authors].sort((a, b) => b.novels.length - a.novels.length || a.name.localeCompare(b.name));
-
 function AuthorsPage() {
+  const { authors } = useLibrary();
+  const sorted = [...authors].sort((a, b) => b.novels.length - a.novels.length || a.name.localeCompare(b.name));
   const [q, setQ] = useState("");
   const term = q.trim().toLowerCase();
   const list = term ? sorted.filter((a) => a.name.toLowerCase().includes(term)) : sorted;

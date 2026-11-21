@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 import { NovelGrid, SectionHeading } from "@/components/site/NovelCard";
 import { Input } from "@/components/ui/input";
-import { byRecent, byViews, categories, getCategory, searchNovels } from "@/lib/catalog";
+import { useLibrary } from "@/lib/library";
 import { cn } from "@/lib/utils";
 
 type NovelsSearch = {
@@ -33,6 +33,7 @@ export const Route = createFileRoute("/novels/")({
 });
 
 function NovelsPage() {
+  const { byRecent, byViews, categories, getCategory, searchNovels } = useLibrary();
   const { category, q, sort } = Route.useSearch();
   const navigate = useNavigate({ from: "/novels/" });
   let list = sort === "latest" ? byRecent : byViews;

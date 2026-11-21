@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ListVideo, Youtube } from "lucide-react";
 import { NovelCard, SectionHeading } from "@/components/site/NovelCard";
 import { Button } from "@/components/ui/button";
-import { collections, novelsOf, youtubePlaylistLink } from "@/lib/catalog";
+import { youtubePlaylistLink } from "@/lib/catalog";
+import { useLibrary } from "@/lib/library";
 
 export const Route = createFileRoute("/playlists")({
   head: () => ({
@@ -19,6 +20,7 @@ export const Route = createFileRoute("/playlists")({
 });
 
 function PlaylistsPage() {
+  const { collections, novelsOf } = useLibrary();
   return (
     <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
       <SectionHeading eyebrow="From the channel" title="Playlists" />
@@ -34,9 +36,11 @@ function PlaylistsPage() {
                   </h2>
                   <p className="mt-1 text-sm text-muted-foreground">{c.count} videos · {items.length} novels</p>
                 </div>
-                <Button asChild variant="glass">
-                  <a href={youtubePlaylistLink(c.id)} target="_blank" rel="noreferrer"><Youtube /> Open on YouTube</a>
-                </Button>
+                {c.ytId && (
+                  <Button asChild variant="glass">
+                    <a href={youtubePlaylistLink(c.ytId)} target="_blank" rel="noreferrer"><Youtube /> Open on YouTube</a>
+                  </Button>
+                )}
               </div>
               <div className="scrollbar-none -mx-4 flex snap-x gap-6 overflow-x-auto px-4 pb-4">
                 {items.map((n) => (
