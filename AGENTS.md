@@ -28,3 +28,11 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- The novel library (novels, authors, playlists, categories) comes from the static `src/data/catalog.json` via `src/lib/catalog.ts`; only community data (stats, reviews, feedback, PDFs) lives in Lovable Cloud — keeps pages fast and SSR-friendly.
+- Novel PDFs live in a private storage bucket and are opened through short-lived signed links — public buckets are blocked on this project.
+- Reader "login" is a name stored in the browser only, not a real account; admin rights come solely from the `user_roles` table.
+- Visitors read community data only through bounded database functions (one novel's reviews/stats/rating, latest reviews, PDF list without file paths); direct table reads are admin-only — keeps every public read limited to what a page shows.
+- PDF links for visitors come from the `getPdfLink` server function (short-lived signed links for registered PDFs only); the bucket has no visitor read rule — files can't be listed or fetched directly.
